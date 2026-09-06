@@ -1,0 +1,39 @@
+{
+  "products": [
+    {
+      "id": "SC-COMPUTER-001",
+      "category": "computers",
+      "name": "ScienceComputer Technical Workstation",
+      "type": "computer",
+      "status": "planned"
+    },
+    {
+      "id": "SC-ELEC-001",
+      "category": "electronics",
+      "name": "Technical Electronics Starter Kit",
+      "type": "project_kit",
+      "status": "planned"
+    },
+    {
+      "id": "SC-SENSOR-001",
+      "category": "sensors",
+      "name": "Technical Sensor Kit",
+      "type": "project_kit",
+      "status": "planned"
+    },
+    {
+      "id": "SC-ROBOT-001",
+      "category": "robotics",
+      "name": "Robotics Development Kit",
+      "type": "project_kit",
+      "status": "planned"
+    },
+    {
+      "id": "SC-INST-001",
+      "category": "instrumentation",
+      "name": "Technical Measurement Kit",
+      "type": "instrumentation",
+      "status": "planned"
+    }
+  ]
+}

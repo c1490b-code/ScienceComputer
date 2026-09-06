@@ -1,0 +1,9 @@
+{
+  "delivery_network": {
+    "status": "architecture",
+    "locations": [],
+    "vehicles": [],
+    "drivers": [],
+    "routes": []
+  }
+}
