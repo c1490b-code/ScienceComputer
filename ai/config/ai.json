@@ -1,0 +1,24 @@
+{
+  "name": "ScienceComputer AI",
+  "version": "0.1.0",
+  "mode": "technical-computer-assistant",
+  "engine": "python",
+  "desktop_ready": true,
+  "terminal_ready": true,
+  "capabilities": {
+    "projects": true,
+    "files": true,
+    "technical_tools": true,
+    "development": true,
+    "data": true,
+    "simulation": true,
+    "automation": true,
+    "model_providers": true
+  },
+  "permissions": {
+    "read_workspace": true,
+    "write_workspace": true,
+    "execute_commands": false,
+    "network_access": false
+  }
+}
