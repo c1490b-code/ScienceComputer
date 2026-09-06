@@ -1,44 +1,31 @@
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 #include <cstdio>
-#include <cstdlib>
-#include <cstring>
 
 int main() {
-    Display *display = XOpenDisplay(nullptr);
+    Display *display = XOpenDisplay(":0");
 
     if (!display) {
-        fprintf(stderr,
-            "ScienceComputer: Cannot connect to X11.\n"
-            "Start Termux:X11 and set DISPLAY=:0 first.\n");
+        std::fprintf(stderr, "Cannot connect to Termux:X11\n");
         return 1;
     }
 
     int screen = DefaultScreen(display);
     Window root = RootWindow(display, screen);
 
-    unsigned long background = BlackPixel(display, screen);
-    unsigned long foreground = WhitePixel(display, screen);
-
     Window window = XCreateSimpleWindow(
-        display,
-        root,
-        0, 0,
-        1200, 760,
-        1,
-        foreground,
-        background
+        display, root,
+        0, 0, 1200, 760, 2,
+        WhitePixel(display, screen),
+        BlackPixel(display, screen)
     );
 
-    XStoreName(display, window, "ScienceComputer");
+    XStoreName(display, window, "ScienceComputer — Technical Computer");
 
     XSelectInput(
         display,
         window,
-        ExposureMask |
-        KeyPressMask |
-        ButtonPressMask |
-        StructureNotifyMask
+        ExposureMask | KeyPressMask | StructureNotifyMask
     );
 
     XMapWindow(display, window);
@@ -52,130 +39,61 @@ int main() {
         XNextEvent(display, &event);
 
         if (event.type == Expose) {
+            XSetForeground(display, gc, WhitePixel(display, screen));
 
-            XSetForeground(display, gc, foreground);
+            XDrawString(display, window, gc, 45, 55,
+                        "SCIENCE COMPUTER", 16);
 
-            XDrawString(
-                display,
-                window,
-                gc,
-                40, 60,
-                "SCIENCE COMPUTER",
-                16
-            );
+            XDrawString(display, window, gc, 45, 85,
+                        "TECHNICAL COMPUTER", 18);
 
-            XDrawString(
-                display,
-                window,
-                gc,
-                40, 95,
-                "Technical Computer Environment",
-                31
-            );
+            XDrawString(display, window, gc, 45, 135,
+                        "ENGINEERING", 11);
 
-            XDrawString(
-                display,
-                window,
-                gc,
-                40, 160,
-                "[ SCIENCE ]",
-                11
-            );
+            XDrawString(display, window, gc, 45, 175,
+                        "TECHNICAL SCIENCE", 17);
 
-            XDrawString(
-                display,
-                window,
-                gc,
-                40, 210,
-                "[ ENGINEERING ]",
-                15
-            );
+            XDrawString(display, window, gc, 45, 215,
+                        "TECHNICAL APPLICATIONS", 22);
 
-            XDrawString(
-                display,
-                window,
-                gc,
-                40, 260,
-                "[ DESIGN ]",
-                10
-            );
+            XDrawString(display, window, gc, 45, 255,
+                        "APPLICATIONS", 12);
 
-            XDrawString(
-                display,
-                window,
-                gc,
-                40, 310,
-                "[ SIMULATION ]",
-                14
-            );
+            XDrawString(display, window, gc, 45, 295,
+                        "DEVELOPMENT", 12);
 
-            XDrawString(
-                display,
-                window,
-                gc,
-                40, 360,
-                "[ DEVELOPMENT ]",
-                15
-            );
+            XDrawString(display, window, gc, 45, 335,
+                        "DESIGN", 6);
 
-            XDrawString(
-                display,
-                window,
-                gc,
-                40, 410,
-                "[ FILES ]",
-                8
-            );
+            XDrawString(display, window, gc, 45, 375,
+                        "SIMULATION", 10);
 
-            XDrawString(
-                display,
-                window,
-                gc,
-                40, 460,
-                "[ TERMINAL ]",
-                11
-            );
+            XDrawString(display, window, gc, 45, 415,
+                        "DATA", 4);
 
-            XDrawString(
-                display,
-                window,
-                gc,
-                40, 540,
-                "SCIENCE COMPUTER CORE",
-                21
-            );
+            XDrawString(display, window, gc, 45, 455,
+                        "INSTRUMENTATION", 16);
 
-            XDrawString(
-                display,
-                window,
-                gc,
-                40, 575,
-                "Runtime: Termux",
-                15
-            );
+            XDrawString(display, window, gc, 45, 495,
+                        "FABRICATION", 11);
 
-            XDrawString(
-                display,
-                window,
-                gc,
-                40, 610,
-                "Display: Termux:X11",
-                19
-            );
+            XDrawString(display, window, gc, 45, 560,
+                        "TERMUX CORE", 11);
 
-            XDrawString(
-                display,
-                window,
-                gc,
-                40, 645,
-                "GitHub: c1490b-code/ScienceComputer",
-                36
-            );
+            XDrawString(display, window, gc, 45, 590,
+                        "TERMUX:X11 DISPLAY", 19);
+
+            XDrawString(display, window, gc, 45, 620,
+                        "GitHub: c1490b-code/ScienceComputer", 35);
+
+            XDrawString(display, window, gc, 45, 680,
+                        "Press Q to close", 16);
         }
 
         if (event.type == KeyPress) {
-            char buffer[32];
+            char buffer[32] = {};
             KeySym key;
+
             XLookupString(
                 &event.xkey,
                 buffer,
@@ -187,10 +105,6 @@ int main() {
             if (buffer[0] == 'q' || buffer[0] == 'Q') {
                 running = false;
             }
-        }
-
-        if (event.type == ClientMessage) {
-            running = false;
         }
     }
 
