@@ -1,3 +1,25 @@
+#!/data/data/com.termux/files/usr/bin/bash
+set -e
+
+ROOT="$HOME/ScienceComputer"
+
+echo "=========================================="
+echo " SCIENCE COMPUTER — DESKTOP BUILD"
+echo "=========================================="
+
+mkdir -p "$ROOT/desktop/src" "$ROOT/desktop/bin"
+
+# --------------------------------------------------
+# INSTALL X11 BUILD DEPENDENCY
+# --------------------------------------------------
+
+pkg install -y libx11 libxext clang
+
+# --------------------------------------------------
+# DESKTOP SOURCE
+# --------------------------------------------------
+
+cat > "$ROOT/desktop/src/science_desktop.cpp" <<'CPP'
 #include <X11/Xlib.h>
 #include <X11/Xutil.h>
 
@@ -304,3 +326,124 @@ int main() {
 
     return 0;
 }
+CPP
+
+# --------------------------------------------------
+# COMPILE
+# --------------------------------------------------
+
+echo
+echo "Compiling ScienceComputer desktop..."
+
+clang++ \
+    -std=c++17 \
+    -O2 \
+    "$ROOT/desktop/src/science_desktop.cpp" \
+    -o "$ROOT/desktop/bin/science-desktop" \
+    -lX11 \
+    -lXext
+
+chmod +x "$ROOT/desktop/bin/science-desktop"
+
+# --------------------------------------------------
+# DESKTOP LAUNCHER
+# --------------------------------------------------
+
+cat > "$ROOT/desktop/start.sh" <<'SH'
+#!/data/data/com.termux/files/usr/bin/bash
+
+ROOT="$HOME/ScienceComputer"
+
+if [ -z "$DISPLAY" ]; then
+    export DISPLAY=:0
+fi
+
+echo "Starting ScienceComputer Desktop..."
+echo "DISPLAY=$DISPLAY"
+
+exec "$ROOT/desktop/bin/science-desktop"
+SH
+
+chmod +x "$ROOT/desktop/start.sh"
+
+ln -sf "$ROOT/desktop/start.sh" "$HOME/bin/science-desktop"
+
+# --------------------------------------------------
+# DESKTOP INFORMATION
+# --------------------------------------------------
+
+cat > "$ROOT/desktop/README.md" <<'DOC'
+# ScienceComputer Desktop
+
+Native C++ X11 graphical shell for ScienceComputer.
+
+The desktop is a front end.
+
+The actual computer remains underneath it:
+
+ScienceComputer Core
+AI
+Technical Systems
+Applications
+Workspace
+
+The desktop does not replace those systems.
+
+Termux:X11 provides the display server.
+DOC
+
+# --------------------------------------------------
+# TEST FILE
+# --------------------------------------------------
+
+cat > "$ROOT/desktop/test.sh" <<'SH'
+#!/data/data/com.termux/files/usr/bin/bash
+
+if [ -z "$DISPLAY" ]; then
+    export DISPLAY=:0
+fi
+
+echo "ScienceComputer X11 test"
+echo "DISPLAY=$DISPLAY"
+
+if "$HOME/ScienceComputer/desktop/bin/science-desktop"; then
+    echo "Desktop exited normally."
+else
+    echo "Desktop could not start."
+    exit 1
+fi
+SH
+
+chmod +x "$ROOT/desktop/test.sh"
+
+# --------------------------------------------------
+# GITHUB
+# --------------------------------------------------
+
+cd "$ROOT"
+
+git add .
+
+git commit -m "Add native ScienceComputer X11 desktop" || true
+
+git push origin main
+
+echo
+echo "=========================================="
+echo " DESKTOP BUILD COMPLETE"
+echo "=========================================="
+echo
+echo "Start Termux:X11 first."
+echo
+echo "Then run:"
+echo
+echo "  export DISPLAY=:0"
+echo "  science-desktop"
+echo
+echo "Or:"
+echo
+echo "  ~/ScienceComputer/desktop/start.sh"
+echo
+echo "Press Q to close the desktop."
+echo
+echo "GitHub synchronized."
