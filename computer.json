@@ -1,0 +1,23 @@
+{
+  "name": "ScienceComputer",
+  "version": "0.1.0",
+  "type": "Technical Computer",
+  "runtime": "Termux",
+  "display": "Termux:X11",
+  "architecture": {
+    "core": true,
+    "engineering": true,
+    "technical_science": true,
+    "technical_applications": true,
+    "applications": true,
+    "development": true,
+    "data": true,
+    "ai": true,
+    "design": true,
+    "simulation": true,
+    "instrumentation": true,
+    "network": true,
+    "security": true,
+    "files": true
+  }
+}
